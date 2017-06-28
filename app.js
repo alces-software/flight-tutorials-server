@@ -15,18 +15,9 @@ server.on('request', function(req, res) {
 		var file = null;
 		console.log(req.url);
 		switch(req.url) {
-		case '/':
-		case '/index.html':
+		case '/tutorial':
+		case '/tutorial/index.html':
 			file = '/index.html';
-			break;
-		case '/webterm.js':
-			file = '/webterm.js';
-			break;
-		case '/terminal.js':
-			file = '/node_modules/terminal.js/dist/terminal.js';
-			break;
-		case '/socket.io-stream.js':
-			file = '/node_modules/socket.io-stream/socket.io-stream.js';
 			break;
 		default:
 			res.writeHead(404, {'Content-Type': 'text/plain'});
