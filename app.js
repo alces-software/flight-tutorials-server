@@ -36,13 +36,13 @@ server.on('request', function(req, res) {
 		fs.createReadStream(__dirname + file).pipe(res);
 	});
 
-socketio(server).of('pty').on('connection', function(socket) {
+socketio(server, {path: '/tutorial/socket.io'}).of('pty').on('connection', function(socket) {
 	// receives a bidirectional pipe from the client see index.html
 	// for the client-side
 	ss(socket).on('new', function(stream, options) {
 		var name = options.name;
 
-		var pty = child_pty.spawn('/bin/sh', ['-c', config.login], options);
+                var pty = child_pty.spawn('/usr/bin/ssh',['localhost'], options);
 		pty.stdout.pipe(stream).pipe(pty.stdin);
 		ptys[name] = pty;
 		socket.on('disconnect', function() {
