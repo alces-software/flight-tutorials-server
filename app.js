@@ -14,15 +14,16 @@ var ptys = {};
 server.on('request', function(req, res) {
   var file = null;
   console.log(req.url);
-  switch(req.url) {
-    case '/tutorial':
-    case '/tutorial/index.html':
-      file = '/public/index.html';
-      break;
-    default:
-      res.writeHead(404, {'Content-Type': 'text/plain'});
-      res.end('404 Not Found');
-      return;
+
+  var match = req.url.match(/^\/tutorial\/static\/(.*)/);
+  if (req.url === '/tutorial' || req.url === '/tutorial/index.html') {
+    file = '/public/static/index.html';
+  } else if (match) {
+    file = '/public/static/' + match[1];
+  } else {
+    res.writeHead(404, {'Content-Type': 'text/plain'});
+    res.end('404 Not Found');
+    return;
   }
   fs.createReadStream(__dirname + file).pipe(res);
 });
