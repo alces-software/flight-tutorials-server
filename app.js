@@ -17,7 +17,7 @@ server.on('request', function(req, res) {
 		switch(req.url) {
 		case '/tutorial':
 		case '/tutorial/index.html':
-			file = '/index.html';
+                        file = '/public/index.html';
 			break;
 		default:
 			res.writeHead(404, {'Content-Type': 'text/plain'});
