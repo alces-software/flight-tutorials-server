@@ -16,7 +16,7 @@ server.on('request', function(req, res) {
   console.log(req.url);
 
   var match = req.url.match(/^\/tutorial\/static\/(.*)/);
-  if (req.url === '/tutorial' || req.url === '/tutorial/index.html') {
+  if (req.url === '/tutorial' || req.url === '/tutorial/' || req.url === '/tutorial/index.html') {
     file = '/public/static/index.html';
   } else if (match) {
     file = '/public/static/' + match[1];
