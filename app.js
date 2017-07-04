@@ -2,7 +2,8 @@ var http = require('http'),
   fs = require('fs'),
   socketio = require('socket.io'),
   child_pty = require('child_pty'),
-  ss = require('socket.io-stream');
+  ss = require('socket.io-stream'),
+  debug = require('debug')('FlightTutorials');
 
 var config = require('./config.json');
 
@@ -13,7 +14,7 @@ var ptys = {};
 
 server.on('request', function(req, res) {
   var file = null;
-  console.log(req.url);
+  debug('Request for %s', req.url);
 
   var match = req.url.match(/^\/tutorial\/static\/(.*)/);
   if (req.url === '/tutorial' || req.url === '/tutorial/' || req.url === '/tutorial/index.html') {
@@ -32,6 +33,7 @@ socketio(server, {path: '/tutorial/socket.io'}).of('pty').on('connection', funct
   // receives a bidirectional pipe from the client see index.html
   // for the client-side
   ss(socket).on('new', function(stream, options) {
+    debug('New stream %o %o', stream, options);
     var name = options.name;
 
     var pty = child_pty.spawn(
@@ -48,7 +50,7 @@ socketio(server, {path: '/tutorial/socket.io'}).of('pty').on('connection', funct
     pty.stdout.pipe(stream).pipe(pty.stdin);
     ptys[name] = pty;
     stream.on('end', function() {
-      console.log("stream end");
+      debug('Stream ended (%o)', stream);
       pty.kill('SIGHUP');
       delete ptys[name];
     });
@@ -64,4 +66,4 @@ process.on('exit', function() {
   }
 });
 
-console.log('Listening on ' + config.interface + ':' + config.port);
+debug('Listening on %s:%s', config.interface, config.port);
