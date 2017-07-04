@@ -34,7 +34,6 @@ socketio(server, {path: '/tutorial/socket.io'}).of('pty').on('connection', funct
   // for the client-side
   ss(socket).on('new', function(stream, options) {
     debug('New stream %o %o', stream, options);
-    var name = options.name;
 
     var pty = child_pty.spawn(
       '/usr/bin/ssh',
@@ -48,11 +47,11 @@ socketio(server, {path: '/tutorial/socket.io'}).of('pty').on('connection', funct
     );
 
     pty.stdout.pipe(stream).pipe(pty.stdin);
-    ptys[name] = pty;
+    ptys[stream] = pty;
     stream.on('end', function() {
       debug('Stream ended (%o)', stream);
       pty.kill('SIGHUP');
-      delete ptys[name];
+      delete ptys[stream];
     });
   });
 });
