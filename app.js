@@ -33,17 +33,8 @@ socketio(server, {path: '/tutorial/socket.io'}).of('pty').on('connection', funct
   // for the client-side
   ss(socket).on('new', function(stream, options) {
     var name = options.name;
+
     var pty = child_pty.spawn('/usr/bin/ssh',['localhost'], options);
-
-    if (Object(options.extra_env) === options.extra_env) {
-      var keys = Object.keys(options.extra_env);
-      for (var i=0; i<keys.length; i+=1) {
-        var key = keys[i];
-        var val = options.extra_env[key];
-        pty.stdin.write('export ' + key + '=' + val + '\n');
-      }
-    }
-
     pty.stdout.pipe(stream).pipe(pty.stdin);
     ptys[name] = pty;
     socket.on('disconnect', function() {
