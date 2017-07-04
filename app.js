@@ -34,7 +34,17 @@ socketio(server, {path: '/tutorial/socket.io'}).of('pty').on('connection', funct
   ss(socket).on('new', function(stream, options) {
     var name = options.name;
 
-    var pty = child_pty.spawn('/usr/bin/ssh',['localhost'], options);
+    var pty = child_pty.spawn(
+      '/usr/bin/ssh',
+      [
+        // The following two lines, prevent use of the SSH agent and require
+        // the user to provide a password for each session started.
+        '-o', 'IdentitiesOnly yes', '-F', '/dev/null',
+        'localhost'
+      ],
+      options
+    );
+
     pty.stdout.pipe(stream).pipe(pty.stdin);
     ptys[name] = pty;
     socket.on('disconnect', function() {
