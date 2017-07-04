@@ -47,8 +47,8 @@ socketio(server, {path: '/tutorial/socket.io'}).of('pty').on('connection', funct
 
     pty.stdout.pipe(stream).pipe(pty.stdin);
     ptys[name] = pty;
-    socket.on('disconnect', function() {
-      console.log("end");
+    stream.on('end', function() {
+      console.log("stream end");
       pty.kill('SIGHUP');
       delete ptys[name];
     });
