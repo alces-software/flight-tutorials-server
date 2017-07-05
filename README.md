@@ -11,6 +11,6 @@ npm install
 npm start
 ```
 
-Then point your browser to http://127.0.0.1:3000
+Then point your browser to http://127.0.0.1:25288
 
 ![Demo](https://raw.githubusercontent.com/Gottox/terminal.js-webshell/master/demo.gif)
