@@ -16,8 +16,8 @@ server.on('request', function(req, res) {
   var file = null;
   debug('Request for %s', req.url);
 
-  var match = req.url.match(/^\/tutorial\/static\/(.*)/);
-  if (req.url === '/tutorial' || req.url === '/tutorial/' || req.url === '/tutorial/index.html') {
+  var match = req.url.match(/^\/tutorials\/static\/(.*)/);
+  if (req.url === '/tutorials' || req.url === '/tutorials/' || req.url === '/tutorials/index.html') {
     file = '/public/static/index.html';
   } else if (match) {
     file = '/public/static/' + match[1];
@@ -29,7 +29,7 @@ server.on('request', function(req, res) {
   fs.createReadStream(__dirname + file).pipe(res);
 });
 
-socketio(server, {path: '/tutorial/socket.io'}).of('pty').on('connection', function(socket) {
+socketio(server, {path: '/tutorials/socket.io'}).of('pty').on('connection', function(socket) {
   // receives a bidirectional pipe from the client see index.html
   // for the client-side
   ss(socket).on('new', function(stream, options) {
