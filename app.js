@@ -16,11 +16,13 @@ server.on('request', function(req, res) {
   var file = null;
   debug('Request for %s', req.url);
 
-  var match = req.url.match(/^\/tutorials\/static\/(.*)/);
-  if (req.url === '/tutorials' || req.url === '/tutorials/' || req.url === '/tutorials/index.html') {
+  var asset_match = req.url.match(/^\/tutorials\/static\/(.*)/);
+  var index_match = req.url.match(/^\/tutorials(\/(index.html)?)?/);
+
+  if (asset_match) {
+    file = '/public/static/' + asset_match[1];
+  } else if (index_match) {
     file = '/public/static/index.html';
-  } else if (match) {
-    file = '/public/static/' + match[1];
   } else {
     res.writeHead(404, {'Content-Type': 'text/plain'});
     res.end('404 Not Found');
