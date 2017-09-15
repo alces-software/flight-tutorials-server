@@ -31,7 +31,7 @@ server.on('request', function(req, res) {
   fs.createReadStream(__dirname + file).pipe(res);
 });
 
-socketio(server, {path: '/tutorials/socket.io'}).of('pty').on('connection', function(socket) {
+socketio(server, {path: config.socketIO.path}).of('pty').on('connection', function(socket) {
   // receives a bidirectional pipe from the client see index.html
   // for the client-side
   ss(socket).on('new', function(stream, options) {
